@@ -12,11 +12,7 @@ public class IterationManager : MonoBehaviour
     TimeLimit timeLimitBar;
     BlockManager blockManager;
 
-    // audio control
-    public GameObject audioManagerPrefab;
     public AudioManager audioManager;
-    // still need to :
-    // audioManager = Instantiate(audioManagerPrefab).GetComponent<AudioManager>(); ???
 
     bool started;
     bool iterationCompleted;
@@ -52,6 +48,7 @@ public class IterationManager : MonoBehaviour
             blockManager = GetComponent<BlockManager>();
             Assert.IsNotNull(blockManager, "BlockManager not found");
         }
+        audioManager = gameObject.AddComponent<AudioManager>();
     }
 
     void Start()
@@ -108,6 +105,7 @@ public class IterationManager : MonoBehaviour
         }
 
         currentIteration++;
+        audioManager.Play(AudioManager.AudioList.bgmWin, false);
         IterationCompleted();
         iterationSwitchUI.ShowContent(IterationSwitchUI.MessageType.Pass);
     }
@@ -118,7 +116,7 @@ public class IterationManager : MonoBehaviour
         {
             return;
         }
-
+        audioManager.Play(AudioManager.AudioList.bgmFail, false);
         IterationCompleted();
         iterationSwitchUI.ShowContent(IterationSwitchUI.MessageType.GameOver);
     }
@@ -126,7 +124,7 @@ public class IterationManager : MonoBehaviour
 
     IEnumerator DelayBeforeRemoveObjects()
     {
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.5f);
         timeLimitBar.Reset();
         foreach (var spikeBlock in GameObject.FindGameObjectsWithTag("SpikeBlock"))
         {
@@ -242,7 +240,7 @@ public class IterationManager : MonoBehaviour
         UpdateCharacterMoveState(false);
 
         Instantiate(Resources.Load<GameObject>("Prefabs/Destination"), destinationPosition, Quaternion.identity);
-
+        audioManager.Play(AudioManager.AudioList.bgmForPlaying, true);
         started = false;
     }
 
