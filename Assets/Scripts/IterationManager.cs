@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Build.Content;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.SceneManagement;
@@ -10,6 +11,12 @@ public class IterationManager : MonoBehaviour
     RecordAction recordAction;
     TimeLimit timeLimitBar;
     BlockManager blockManager;
+
+    // audio control
+    public GameObject audioManagerPrefab;
+    public AudioManager audioManager;
+    // still need to :
+    // audioManager = Instantiate(audioManagerPrefab).GetComponent<AudioManager>(); ???
 
     bool started;
     bool iterationCompleted;
